@@ -2,8 +2,6 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { cn } from "../lib/utils";
 import { FeedbackModal } from "./FeedbackModal";
-import { type DashboardData } from "../api/apiCall";
-
 const navItems = [
   { icon: "/assets/dashboard.svg", label: "Dashboard", active: true },
   { icon: "/assets/phone.svg", label: "Call Insights", active: false },

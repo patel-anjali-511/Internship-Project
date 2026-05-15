@@ -12,7 +12,6 @@ function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [activeUser, setActiveUser] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [dashboard, setDashboard] = useState<any>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentView, setCurrentView] = useState<"dashboard" | "feedback-history">("dashboard");
@@ -27,17 +26,12 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated && activeUser) {
-      // Fetch both profile and dashboard data
-      Promise.all([
-        apiCall.getProfile(activeUser),
-        apiCall.getDashboard(activeUser),
-      ]).then(([profile, dashboardData]) => {
+      // Fetch profile data
+      apiCall.getProfile(activeUser).then((profile) => {
         setCurrentUser(profile);
-        setDashboard(dashboardData);
       });
     } else {
       setCurrentUser(null);
-      setDashboard(null);
     }
   }, [isAuthenticated, activeUser]);
 
@@ -59,7 +53,6 @@ function App() {
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar - Hidden on mobile by default, shown as drawer */}
       <Sidebar
-        dashboard={dashboard}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         currentView={currentView}
@@ -72,7 +65,6 @@ function App() {
           users={users}
           activeUser={activeUser}
           profile={currentUser}
-          onUserChange={setActiveUser}
           onLogout={handleLogout}
           onMenuClick={() => setIsSidebarOpen(true)}
         />
